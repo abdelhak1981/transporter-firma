@@ -1,0 +1,19 @@
+# init_db.py (einmal ausführen)
+import sqlite3, os
+DB = "transport.db"
+conn = sqlite3.connect(DB)
+c = conn.cursor()
+c.execute("""CREATE TABLE IF NOT EXISTS kunden(
+    id INTEGER PRIMARY KEY,
+    name TEXT, tel TEXT, mail TEXT)""")
+c.execute("""CREATE TABLE IF NOT EXISTS termine(
+    id INTEGER PRIMARY KEY,
+    kunde_id INTEGER,
+    datum TEXT, zeit TEXT,
+    abfahrt TEXT, ziel TEXT,
+    preis REAL,
+    mail_sent INTEGER DEFAULT 0,
+    reminder_sent INTEGER DEFAULT 0,
+    FOREIGN KEY(kunde_id) REFERENCES kunden(id))""")
+conn.commit(); conn.close()
+print("DB ready")
